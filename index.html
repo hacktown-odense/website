@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Hacktown - Loading a hackerspace in Odense</title>
+    <style>
+        body {
+            background-color: black;
+            color: white;
+        }
+
+        @media (prefers-color-scheme: light) {
+            body {
+                background-color: white;
+                color: black;
+            }
+        }
+    </style>
+</head>
+<body>
+<div>
+    <h1>Hacktown</h1>
+    <p>
+        Hi there! <br/>
+        We're trying to build a hackerspace in Odense.
+    </p>
+    <p>
+        Currently we're still trying to find a space and get organized. <br/>
+        At the moment we have biweekly meetings - find the date and location in our Signal group below.
+    </p>
+    <p>Would you like to join us on the journey? <br/>Grab an invite to the signal group by clicking the button below
+    </p>
+
+    <button class="g-recaptcha" data-sitekey="6Lduy1MqAAAAAJXtQhoohXBoIXaV6xNKayKbkBcK" data-callback="onSubmit">
+        Get invite link
+    </button>
+
+    <p>Invite link:</p>
+    <span id="invite"></span>
+</div>
+<script>
+    async function onSubmit(token) {
+        const url = 'http://api.hacktown.dk/validate';
+        const options = {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({ token: token })
+        };
+
+        try {
+            await fetch(url, options)
+                .then(response => response.json())
+                .then(data => {
+                document.getElementById("invite").innerHTML = "<a href='" + data.invite_link + "'>Click here to join</a>";
+            });
+        } catch (error) {
+            console.error(error);
+        }
+    }
+</script>
+<script src="https://www.google.com/recaptcha/api.js"></script>
+</body>
+</html>
